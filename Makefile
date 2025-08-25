@@ -5,14 +5,16 @@
 #
 
 # select underlaying LCGL display driver (SDL2 || X11)
-LV_DRIVER          := X11
-#LV_DRIVER          := SDL2
+#LV_DRIVER          := X11
+LV_DRIVER          := SDL2
 
 PROJECT 			?= lvgl-demo
 MAKEFLAGS 			:= -j $(shell nproc)
 SRC_EXT      		:= c
+CPP_SRC_EXT      		:= cpp
 OBJ_EXT				:= o
 CC 					?= gcc
+CPP			:= g++
 
 SRC_DIR				:= ./
 WORKING_DIR			:= ./build
@@ -29,6 +31,7 @@ WARNINGS 			:= -Wall -Wextra \
             			-Wtype-limits -Wsizeof-pointer-memaccess -Wpointer-arith
 
 CFLAGS 				:= -O0 -g $(WARNINGS)
+CPPFLAGS			:= -O0 -g
 
 # simulator library define
 ifeq  "$(LV_DRIVER)" "SDL2"
@@ -41,26 +44,34 @@ endif
 DEFINES				:= -D SIMULATOR=1 -D LV_BUILD_TEST=0 -D $(LV_DRIVER_USE)
 
 # Include simulator inc folder first so lv_conf.h from custom UI can be used instead
-INC 				:= -I./ui/simulator/inc/ -I./ -I./lvgl/ #-I/usr/include/freetype2 -L/usr/local/lib
+INC 				:= -I./ui/simulator/inc/ -I./ -I./lvgl/ -I./lvglpp/src #-I/usr/include/freetype2 -L/usr/local/lib
 LDLIBS	 			:= -l$(LV_DRIVER) -lpthread -lm #-lfreetype -lavformat -lavcodec -lavutil -lswscale -lm -lz
 BIN 				:= $(BIN_DIR)/demo
 
 COMPILE				= $(CC) $(CFLAGS) $(INC) $(DEFINES)
+CPP_COMPILE			= $(CPP) $(CPPFLAGS) $(INC) $(DEFINES)
 
 # Automatically include all source files
 SRCS 				:= $(shell find $(SRC_DIR) -type f -name '*.c' -not -path '*/\.*')
+CPP_SRCS 				:= $(shell find $(SRC_DIR) -type f -name '*.cpp' -not -path '*/\.*')
 OBJECTS    			:= $(patsubst $(SRC_DIR)%,$(BUILD_DIR)/%,$(SRCS:.$(SRC_EXT)=.$(OBJ_EXT)))
+OBJECTS    			:= $(OBJECTS) $(patsubst $(SRC_DIR)%,$(BUILD_DIR)/%,$(CPP_SRCS:.$(CPP_SRC_EXT)=.$(OBJ_EXT)))
 
 all: $(BIN)
 
 $(BUILD_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(SRC_EXT) lv_demo_conf.h lv_conf.h Makefile
-	@echo 'Building project file: $<'
+	@echo 'Building C-project file: $<'
 	@mkdir -p $(dir $@)
 	@$(COMPILE) -c -o "$@" "$<"
 
+$(BUILD_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.$(CPP_SRC_EXT) lv_demo_conf.h lv_conf.h Makefile
+	@echo 'Building CPP-project file: $<'
+	@mkdir -p $(dir $@)
+	@$(CPP_COMPILE) -c -o "$@" "$<"
+
 $(BIN): $(OBJECTS)
 	@mkdir -p $(BIN_DIR)
-	$(CC) -o $(BIN) $(OBJECTS) $(LDFLAGS) ${LDLIBS}
+	$(CPP) -o $(BIN) $(OBJECTS) $(LDFLAGS) ${LDLIBS}
 
 clean:
 	rm -rf $(WORKING_DIR)
