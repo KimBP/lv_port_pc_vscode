@@ -4,3 +4,7 @@
 [submodule "lvgl"]
 	path = lvgl
 	url = https://github.com/lvgl/lvgl.git
+[submodule "lvglpp"]
+	path = lvglpp
+	url = ../lvglpp
+	branch = kibon/pc_port
