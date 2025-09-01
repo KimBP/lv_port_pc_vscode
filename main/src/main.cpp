@@ -15,6 +15,7 @@
 #include "lvgl/lvgl.h"
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
+#include "lvglpp/examples/examples.h"
 #if USE_SDL
   #define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" issue*/
   #include <SDL2/SDL.h>
@@ -173,6 +174,25 @@ int main(int argc, char **argv)
   /*Initialize the HAL (display, input devices, tick) for LVGL*/
   hal_init();
 
+  /* C++ implementations */
+//  lvgl::examples::switch_1();
+//  lvgl::examples::calendar_1();
+//  lvgl::examples::btnmatrix_2();
+//  lvgl::examples::checkbox_1();
+//  lvgl::examples::colorwheel_1();
+//  lvgl::examples::chart_6();
+//  lvgl::examples::table_2();
+//  lvgl::examples::scroll_2();
+//  lvgl::examples::textarea_1();
+//  lvgl::examples::msgbox_1();
+//  lvgl::examples::dropdown_2();
+//  lvgl::examples::button_1();
+//  lvgl::examples::scroll_1();
+//  lvgl::examples::tabview_1();
+//  lvgl::examples::flex_3();
+//  lvgl::examples::label_1();
+
+  /* C implementations */
 //  lv_example_switch_1();
 //  lv_example_calendar_1();
 //  lv_example_btnmatrix_2();
@@ -187,7 +207,6 @@ int main(int argc, char **argv)
 //  lv_example_btn_1();
 //  lv_example_scroll_1();
 //  lv_example_tabview_1();
-//  lv_example_tabview_1();
 //  lv_example_flex_3();
 //  lv_example_label_1();
 
@@ -197,7 +216,7 @@ int main(int argc, char **argv)
 //  lv_demo_stress();
 //  lv_demo_music();
 
-//  user_image_demo();
+// user_image_demo();
 
   while(1) {
     /* Periodically call the lv_task handler.
