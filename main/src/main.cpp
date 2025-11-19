@@ -16,6 +16,7 @@
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/demos/lv_demos.h"
 #include "glob.h"
+#include "lvglpp/examples/examples.h"
 
 /*********************
  *      DEFINES
@@ -77,7 +78,43 @@ int main(int argc, char **argv)
 
   #if LV_USE_OS == LV_OS_NONE
  
-  lv_demo_widgets();
+  /* C++ implementations */
+  lvgl::examples::switch_1();
+//  lvgl::examples::calendar_1();
+//  lvgl::examples::btnmatrix_2();
+//  lvgl::examples::checkbox_1();
+//  lvgl::examples::colorwheel_1();
+//  lvgl::examples::chart_6();
+//  lvgl::examples::table_2();
+//  lvgl::examples::scroll_2();
+//  lvgl::examples::textarea_1();
+//  lvgl::examples::msgbox_1();
+//  lvgl::examples::dropdown_2();
+//  lvgl::examples::button_1();
+//  lvgl::examples::scroll_1();
+//  lvgl::examples::tabview_1();
+//  lvgl::examples::flex_3();
+//  lvgl::examples::label_1();
+
+  /* C implementations */
+//  lv_example_switch_1();
+//  lv_example_calendar_1();
+//  lv_example_btnmatrix_2();
+//  lv_example_checkbox_1();
+//  lv_example_colorwheel_1();
+//  lv_example_chart_6();
+//  lv_example_table_2();
+//  lv_example_scroll_2();
+//  lv_example_textarea_1();
+//  lv_example_msgbox_1();
+//  lv_example_dropdown_2();
+//  lv_example_btn_1();
+//  lv_example_scroll_1();
+//  lv_example_tabview_1();
+//  lv_example_flex_3();
+//  lv_example_label_1();
+  
+//  lv_demo_widgets();
 
   while(1) {
     /* Periodically call the lv_task handler.
