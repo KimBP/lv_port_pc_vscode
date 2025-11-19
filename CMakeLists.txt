@@ -71,10 +71,14 @@ add_compile_definitions($<$<BOOL:${LV_USE_FFMPEG}>:LV_USE_FFMPEG=1>)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 
+# Add LVGLPP subdirectory
+add_subdirectory(lvglpp)
+target_include_directories(lvgl PUBLIC lvglpp/src)
+
 # Create the main executable, depending on the FreeRTOS option
 if(USE_FREERTOS)
     add_executable(main
-        ${PROJECT_SOURCE_DIR}/main/src/main.c
+        ${PROJECT_SOURCE_DIR}/main/src/main.cpp
         ${PROJECT_SOURCE_DIR}/main/src/freertos_main.cpp
         ${PROJECT_SOURCE_DIR}/main/src/mouse_cursor_icon.c
         ${PROJECT_SOURCE_DIR}/main/src/FreeRTOS_Posix_Port.c
@@ -84,14 +88,14 @@ if(USE_FREERTOS)
     target_link_libraries(main freertos_config FreeRTOS)
 else()
     add_executable(main
-        ${PROJECT_SOURCE_DIR}/main/src/main.c
+        ${PROJECT_SOURCE_DIR}/main/src/main.cpp
         ${PROJECT_SOURCE_DIR}/main/src/mouse_cursor_icon.c
     )
 endif()
 
 # Define LVGL configuration as a simple include
 target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
-target_link_libraries(main lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES} m pthread)
+target_link_libraries(main lvglpp lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES} m pthread)
 
 # Only link freertos_config if the FreeRTOS directory exists
 if(USE_FREERTOS)
@@ -138,6 +142,10 @@ endif()
 # Apply additional compile options if the build type is Debug
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Debug mode enabled")
+
+    target_compile_options(lvglpp PRIVATE
+        -Wall
+    )
 
     target_compile_options(lvgl PRIVATE
         -pedantic-errors
