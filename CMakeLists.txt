@@ -78,18 +78,18 @@ target_include_directories(lvgl PUBLIC lvglpp/src)
 # Create the main executable, depending on the FreeRTOS option
 if(USE_FREERTOS)
     add_executable(main
-        ${PROJECT_SOURCE_DIR}/main/src/main.cpp
-        ${PROJECT_SOURCE_DIR}/main/src/freertos_main.cpp
-        ${PROJECT_SOURCE_DIR}/main/src/mouse_cursor_icon.c
-        ${PROJECT_SOURCE_DIR}/main/src/FreeRTOS_Posix_Port.c
+        ${PROJECT_SOURCE_DIR}/src/main.cpp
+        ${PROJECT_SOURCE_DIR}/src/freertos_main.cpp
+        ${PROJECT_SOURCE_DIR}/src/mouse_cursor_icon.c
+        ${PROJECT_SOURCE_DIR}/src/freertos/freertos_posix_port.c
         ${FREERTOS_SOURCES}  # Add only if USE_FREERTOS is enabled
     )
     # Link FreeRTOS libraries
     target_link_libraries(main freertos_config FreeRTOS)
 else()
     add_executable(main
-        ${PROJECT_SOURCE_DIR}/main/src/main.cpp
-        ${PROJECT_SOURCE_DIR}/main/src/mouse_cursor_icon.c
+        ${PROJECT_SOURCE_DIR}/src/main.cpp
+        ${PROJECT_SOURCE_DIR}/src/mouse_cursor_icon.c
     )
 endif()
 
