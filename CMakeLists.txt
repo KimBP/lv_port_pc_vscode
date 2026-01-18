@@ -69,17 +69,20 @@ add_compile_definitions($<$<BOOL:${LV_USE_FFMPEG}>:LV_USE_FFMPEG=1>)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 
+# Add LVGLPP subdirectory
+add_subdirectory(lvglpp)
+target_include_directories(lvgl PUBLIC lvglpp/src)
+
 set(MAIN_SOURCES src/mouse_cursor_icon.c src/hal/hal.c)
-set(MAIN_LIBS lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
+set(MAIN_LIBS lvglpp lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
 
 # Create the main executable, depending on the FreeRTOS option
 if(USE_FREERTOS)
     list(APPEND MAIN_SOURCES src/freertos_main.c src/freertos/freertos_posix_port.c ${FREERTOS_SOURCES})
     list(APPEND MAIN_LIBS freertos_config freertos_kernel)
 else()
-    list(APPEND MAIN_SOURCES src/main.c)
+    list(APPEND MAIN_SOURCES src/main.cpp)
 endif()
-
 
 if(NOT MSVC)
     list(APPEND MAIN_LIBS m pthread)
@@ -158,6 +161,10 @@ endif()
 # Apply additional compile options if the build type is Debug
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Debug mode enabled")
+
+    target_compile_options(lvglpp PRIVATE
+        -Wall
+    )
 
     target_compile_options(lvgl PRIVATE
         -pedantic-errors
