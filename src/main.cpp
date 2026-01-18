@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file main.cpp
  *
  */
 
@@ -10,7 +10,6 @@
 #ifndef _DEFAULT_SOURCE
   #define _DEFAULT_SOURCE /* needed for usleep() */
 #endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef _MSC_VER
@@ -25,6 +24,7 @@
 #include <SDL.h>
 
 #include "hal/hal.h"
+#include "lvglpp/examples/examples.h"
 
 /*********************
  *      DEFINES
@@ -50,7 +50,7 @@
  *   GLOBAL FUNCTIONS
  **********************/
 
-#if LV_USE_OS != LV_OS_FREERTOS
+#if LV_USE_OS == LV_OS_NONE
 
 int main(int argc, char **argv)
 {
@@ -65,18 +65,56 @@ int main(int argc, char **argv)
 
   /* Run the default demo */
   /* To try a different demo or example, replace this with one of: */
-  /* - lv_demo_benchmark(); */
   /* - lv_demo_stress(); */
-  /* - lv_example_label_1(); */
-  /* - etc. */
+  /* or the ones below */
   lv_demo_widgets();
+
+  /* C++ implementations */
+//  lvgl::examples::switch_1();
+//  lvgl::examples::calendar_1();
+//  lvgl::examples::btnmatrix_2();
+//  lvgl::examples::checkbox_1();
+//  lvgl::examples::chart_2();  
+//  lvgl::examples::chart_6();  
+//  lvgl::examples::table_2();
+//  lvgl::examples::scroll_2();
+//  lvgl::examples::textarea_1();
+//  lvgl::examples::msgbox_1();
+//  lvgl::examples::dropdown_2();
+//  lvgl::examples::button_1();
+//  lvgl::examples::scroll_1();
+//  lvgl::examples::tabview_1();
+//  lvgl::examples::flex_3();
+//  lvgl::examples::label_1();
+//  lvgl::examples::label_4();
+//  lvgl::examples::canvas_1();
+ 
+  /* C implementations */
+//  lv_example_switch_1();
+//  lv_example_calendar_1();
+//  lv_example_buttonmatrix_2();
+//  lv_example_checkbox_1();
+//  lv_example_chart_2();
+//  lv_example_chart_6();
+//  lv_example_table_2();
+//  lv_example_scroll_2();
+//  lv_example_textarea_1();
+//  lv_example_msgbox_1();
+//  lv_example_dropdown_2();
+//  lv_example_button_1();
+//  lv_example_scroll_1();
+//  lv_example_tabview_1();
+//  lv_example_flex_3();
+//  lv_example_label_1();
+//  lv_example_label_4();
+//  lv_example_canvas_1();
 
   while(1) {
     /* Periodically call the lv_task handler.
      * It could be done in a timer interrupt or an OS task too.*/
     uint32_t sleep_time_ms = lv_timer_handler();
-    if(sleep_time_ms == LV_NO_TIMER_READY){
-	sleep_time_ms =  LV_DEF_REFR_PERIOD;
+    if (sleep_time_ms == LV_NO_TIMER_READY) {
+      sleep_time_ms = LV_DEF_REFR_PERIOD;
     }
 #ifdef _MSC_VER
     Sleep(sleep_time_ms);
@@ -88,10 +126,8 @@ int main(int argc, char **argv)
   return 0;
 }
 
-
 #endif
 
 /**********************
  *   STATIC FUNCTIONS
  **********************/
-
