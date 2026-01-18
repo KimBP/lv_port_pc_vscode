@@ -7,3 +7,6 @@
 [submodule "FreeRTOS"]
 	path = FreeRTOS
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+[submodule "lvglpp"]
+	path = lvglpp
+	url = git@github.com:KimBP/lvglpp
